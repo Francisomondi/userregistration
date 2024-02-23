@@ -36,7 +36,7 @@ const RegisterForm = (props: Props) => {
         console.log("User registration failed")
       }
     } catch (error) {
-      
+      console.log('error during registration: ',error)
     }
 
   }
