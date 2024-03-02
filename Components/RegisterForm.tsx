@@ -16,7 +16,24 @@ const RegisterForm = (props: Props) => {
       setError('All fields are required')
       return
     }
+
     try {
+      const resUserAxists = await fetch('api/userExists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email
+        }),
+
+      })
+
+      const {user} = await resUserAxists.json()
+       if (user) {
+        setError('user already exits')
+        return
+       }
       const response = await fetch('api/register', {
         method: 'POST',
         headers:{
