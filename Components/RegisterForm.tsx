@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
@@ -9,6 +10,8 @@ const RegisterForm = (props: Props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+
+  const router = useRouter()
 
   const handleSubmit = async (e:any) => {
     e.preventDefault()
@@ -30,10 +33,10 @@ const RegisterForm = (props: Props) => {
       })
 
       const {user} = await resUserAxists.json()
-       if (user) {
+      if (user) {
         setError('user already exits')
         return
-       }
+      }
       const response = await fetch('api/register', {
         method: 'POST',
         headers:{
@@ -48,6 +51,7 @@ const RegisterForm = (props: Props) => {
       if(response.ok){
         const form = e.target
         form.reset()
+        router.push('/')
       }
       else{
         console.log("User registration failed")
