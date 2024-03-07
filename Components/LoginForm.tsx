@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 
 const LoginForm= () => {
@@ -9,21 +10,26 @@ const LoginForm= () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-const handleSubmit = async (e) => {
+  const router = useRouter()
+
+const handleSubmit = async (e: any) => {
   e.preventDefault()
   try {
-    const res = await signIn('credentials', {
+   const res= await signIn('credentials', {
       email,
       password,
       redirect: false
     })
+    router.push('/dashboard')
 
-    if (res.error) {
+    if (res?.error) {
+
       setError('invalid credentials')
+      return
     }
     
   } catch (error) {
-    
+    console.log('error subitting this for')
   }
 
 }
