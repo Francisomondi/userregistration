@@ -15,21 +15,21 @@ const LoginForm= () => {
 const handleSubmit = async (e: any) => {
   e.preventDefault()
   try {
-   const res= await signIn('credentials', {
+   const res = await signIn('credentials', {
       email,
       password,
       redirect: false
     })
-    router.push('/dashboard')
+    
 
     if (res?.error) {
-
       setError('invalid credentials')
       return
     }
+    router.replace('dashboard')
     
   } catch (error) {
-    console.log('error subitting this for')
+    console.log(error)
   }
 
 }
