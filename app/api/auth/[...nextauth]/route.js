@@ -1,5 +1,8 @@
 import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { connectDB } from "@/lib/mongodb"
+import User from "@/models/user"
+import  bcrypt  from "bcryptjs";
 
 
 const authOptions = {
@@ -9,8 +12,26 @@ const authOptions = {
         credentials: {},
 
         async authorize(credentials){
-            const user = {id: '1'}
-            return user
+            const {email,password} = credentials
+
+                try {
+                    await connectDB()
+                    const user = await User.findOne({email})
+
+                    if (!user) {
+                        return null
+                    }
+
+                    const passwordsMatch = await bcrypt.compare(password, user.password)
+                    if (!passwordsMatch) {
+                        return null
+                    }
+
+                return User
+
+                } catch (error) {
+                    console.log(error)
+                }
 
         }
 
